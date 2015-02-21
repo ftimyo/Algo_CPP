@@ -1,7 +1,14 @@
 #include <iterator>
 #include <algorithm>
 class QuickSort {
-template<typename It, typename BinaryComp>
+ public:
+	template<typename It, typename BinaryComp>
+	QuickSort(const It& first, const It& last, const BinaryComp& cmp) {
+		if (first == last) return;
+		partition(first, last - 1, cmp);
+	}
+
+	template<typename It, typename BinaryComp>
 	void partition(const It& first, const It& last, const BinaryComp& cmp) {
 		if (first == last) return;
 		auto l = first, r = last;
@@ -17,12 +24,6 @@ template<typename It, typename BinaryComp>
 			partition(first, l - 1, cmp);
 		if (std::distance(r, last) != 0)
 			partition(r + 1, last, cmp);
-	}
- public:
-template<typename It, typename BinaryComp>
-	QuickSort(const It& first, const It& last, const BinaryComp& cmp) {
-		if (first == last) return;
-		partition(first, last - 1, cmp);
 	}
 };
 
