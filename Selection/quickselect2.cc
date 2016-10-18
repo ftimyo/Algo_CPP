@@ -1,21 +1,20 @@
 #include <iostream>
 #include <random>
 #include <vector>
+#include <algorithm>
+#include <queue>
+/*online quick selection algorithm implementation*/
 template <typename It, typename Cmp, typename Order>
-void quickselect(It b, It e, Cmp cmp, Order k) {
-	if (e < b+1) return;
-	auto i = b, j = e;
-	auto p = *i;
-	while (i < j) {
-		while (cmp(*++i ,p) && i < e);
-		while (cmp(p, *--j) && b < j);
-		if (i < j) std::swap(*i,*j);
-		else break;
+auto quickselect(It b, It e, Cmp cmp, Order k) {
+	using ValT = std::remove_reference_t<decltype(*b)>;
+	std::priority_queue<ValT, std::vector<ValT>, Cmp> heap(b,b+k+1,cmp);
+	for (auto i = b+k+1; i < e; ++i) {
+		if (cmp(*i,heap.top())) {
+			heap.pop();
+			heap.push(*i);
+		}
 	}
-	std::swap(*j,*b);
-	if (j-b == k) return;
-	if (j-b > k) quickselect(b,j,cmp, k);
-	else quickselect(j+1,e,cmp,k-(j-b)-1);
+	return heap.top();
 }
 
 #if 1
@@ -29,8 +28,7 @@ int main() {
 	auto v1 = std::vector<decltype(cnt)>(cnt,0);
 	for (i = 0; i < cnt; ++i) v1[i] = rd();
 	std::cout << "Start Select" << std::endl;
-	quickselect(begin(v1),end(v1),cmp,k);
-	auto med = v1[k];
+	auto med = quickselect(begin(v1),end(v1),cmp,k);
 	std::cout << "Start validating" << std::endl;
 	std::sort(begin(v1),end(v1),cmp);
 	bool valid = true;
