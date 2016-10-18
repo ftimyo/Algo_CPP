@@ -30,7 +30,7 @@ int main() {
 	std::cout << "Start Select" << std::endl;
 	auto med = quickselect(begin(v1),end(v1),cmp,k);
 	std::cout << "Start validating" << std::endl;
-	std::sort(begin(v1),end(v1),cmp);
+	std::nth_element(begin(v1),begin(v1)+k,end(v1),cmp);
 	bool valid = true;
 	if (v1[k] != med) valid = false;
 	if (valid) std::cout << "Correct" << std::endl;

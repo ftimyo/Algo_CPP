@@ -27,14 +27,11 @@ int main() {
 	auto v1 = std::vector<decltype(cnt)>(cnt,0);
 	for (i = 0; i < cnt; ++i) v1[i] = rd();
 	std::cout << "Start Sorting" << std::endl;
-	quicksort(begin(v1),end(v1),[](auto& x, auto& y){return x < y;});
+	auto cmp = [](auto& x, auto& y){return x < y;};
+	quicksort(begin(v1),end(v1),cmp);
 	std::cout << "Start validating" << std::endl;
 	bool valid = true;
-	for (i = 1; i < cnt; ++i)
-		if (v1[i-1] > v1[i]) {
-			valid = false;
-			break;
-		}
+	if (!std::is_sorted(begin(v1),end(v1),cmp)) valid = false;
 	if (valid) std::cout << "Correct" << std::endl;
 	else std::cout << "Incorrect" << std::endl;
 	return 0;
